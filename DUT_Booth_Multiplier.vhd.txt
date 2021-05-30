@@ -1,0 +1,91 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 05/30/2021 12:39:27 PM
+-- Design Name: 
+-- Module Name: Tb_Booth_Multiply - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_unsigned.all;
+use IEEE.std_logic_arith.all;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity Tb_Booth_Multiply is
+--  Port ( );
+end Tb_Booth_Multiply;
+
+architecture Behavioral of Tb_Booth_Multiply is
+--signals:
+    signal s_clk, s_rst, s_start, s_ready: std_logic;
+    signal s_a, s_b: std_logic_vector(7 downto 0);
+    signal s_r: std_logic_vector(15 downto 0);
+    --HELP:
+    signal i_s: std_logic_vector(3 downto 0);
+begin
+--instantiate DUT:
+    BOOTH_MULTIPLIER: entity work. booth_multiply
+    port map
+    (
+        clk => s_clk,
+        rst => s_rst,
+        start => s_start,
+        ready => s_ready,
+        a_in => s_a,
+        b_in => s_b,
+        r_out => s_r,
+        i_out => i_s
+    );
+    
+--generate test signals:
+    process
+    begin
+        s_clk <= '0' after 50ns, '1' after 100ns, '0' after 150ns, '1' after 200ns, '0' after 250ns, '1' after 300ns,
+            '0' after 350ns, '1' after 400ns, '0' after 450ns, '1' after 500ns, '0' after 550ns, '1' after 600ns,
+            '0' after 650ns, '1' after 700ns, '0' after 750ns, '1' after 800ns, '0' after 850ns, '1' after 900ns,
+            '0' after 950ns, '1' after 1000ns, '0' after 1050ns, '1' after 1100ns, '0' after 1150ns, '1' after 1200ns,
+            '0' after 1250ns, '1' after 1300ns, '0' after 1350ns, '1' after 1400ns, '0' after 1450ns, '1' after 1500ns,
+            '0' after 1550ns, '1' after 1600ns, '0' after 1650ns, '1' after 1700ns, '0' after 1750ns, '1' after 1800ns,
+            '0' after 1850ns, '1' after 1900ns, '0' after 1950ns, '1' after 2000ns, '0' after 2050ns, '1' after 2100ns,
+            '0' after 2150ns, '1' after 2200ns, '0' after 2250ns, '1' after 2300ns, '0' after 2350ns, '1' after 2400ns,
+            '0' after 2450ns, '1' after 2500ns, '0' after 2550ns, '1' after 2600ns, '0' after 2650ns, '1' after 2700ns,
+            '0' after 2750ns, '1' after 2800ns, '0' after 2850ns, '1' after 2900ns, '0' after 2950ns, '1' after 3000ns,
+            '0' after 3050ns, '1' after 3100ns, '0' after 3150ns, '1' after 3200ns, '0' after 3250ns, '1' after 3300ns,
+            '0' after 3350ns, '1' after 3400ns, '0' after 3450ns, '1' after 3500ns, '0' after 3550ns, '1' after 3600ns,
+            '0' after 3650ns, '1' after 3700ns, '0' after 3750ns, '1' after 3800ns, '0' after 3850ns, '1' after 3900ns,
+            '0' after 3950ns, '1' after 4000ns;
+         
+        s_rst <= '1', '0' after 50ns;   --, '1' after 700ns, '0' after 750ns
+        
+        s_start <= '0', '1' after 60 ns, '0' after 160ns, '1' after 1550ns, '0' after 1650ns; -- '1' after 3550ns, '0' after 3650ns;  
+        
+        s_a <= "00100000", "00000110" after 400ns;        
+        
+        s_b <= "00100000", "00000110" after 400ns;
+    
+    wait;
+    end process;
+
+end Behavioral;
