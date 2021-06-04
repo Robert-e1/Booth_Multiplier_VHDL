@@ -130,4 +130,3 @@ begin
     r_out <= r_reg;
     
 end Behavioral;
-

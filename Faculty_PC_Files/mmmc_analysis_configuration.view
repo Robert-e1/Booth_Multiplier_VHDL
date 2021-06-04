@@ -1,0 +1,26 @@
+# Version:1.0 MMMC View Definition File
+# Do Not Remove Above Line
+
+create_rc_corner -name max_slow -T {125} -cap_table {/cad/process/ams_4_10/cds/HK_C35/LEF/encounter/c35b4-worst.capTable} -preRoute_res {1.0} -preRoute_cap {1.0} -preRoute_clkres {0.0} -preRoute_clkcap {0.0} -postRoute_res {1.0} -postRoute_cap {1.0} -postRoute_xcap {1.0} -postRoute_clkres {0.0} -postRoute_clkcap {0.0}
+
+create_rc_corner -name min_fast -T {-40} -cap_table {/cad/process/ams_4_10/cds/HK_C35/LEF/encounter/c35b4-best.capTable} -preRoute_res {1.0} -preRoute_cap {1.0} -preRoute_clkres {0.0} -preRoute_clkcap {0.0} -postRoute_res {1.0} -postRoute_cap {1.0} -postRoute_xcap {1.0} -postRoute_clkres {0.0} -postRoute_clkcap {0.0}
+
+create_rc_corner -name typ_typ -T {25} -cap_table {/cad/process/ams_4_10/cds/HK_C35/LEF/encounter/c35b4-typical.capTable} -preRoute_res {1.0} -preRoute_cap {1.0} -preRoute_clkres {0.0} -preRoute_clkcap {0.0} -postRoute_res {1.0} -postRoute_cap {1.0} -postRoute_xcap {1.0} -postRoute_clkres {0.0} -postRoute_clkcap {0.0}
+
+
+create_library_set -name libset_max -timing {/cad/process/ams_4_10/liberty/c35_3.3V/c35_CORELIB_WC.lib /cad/process/ams_4_10/liberty/c35_3.3V/c35_IOLIB_WC.lib}
+create_library_set -name libset_min -timing {/cad/process/ams_4_10/liberty/c35_3.3V/c35_CORELIB_BC.lib /cad/process/ams_4_10/liberty/c35_3.3V/c35_IOLIB_BC.lib}
+create_library_set -name libset_typ -timing {/cad/process/ams_4_10/liberty/c35_3.3V/c35_CORELIB_TYP.lib /cad/process/ams_4_10/liberty/c35_3.3V/c35_IOLIB_TYP.lib}
+
+create_constraint_mode -name default -sdc_files {synth_timing.sdc}
+
+create_delay_corner -name worst -library_set {libset_max} -rc_corner {max_slow}
+create_delay_corner -name best -library_set {libset_min} -rc_corner {min_fast}
+create_delay_corner -name nom -library_set {libset_typ} -rc_corner {typ_typ}
+
+create_analysis_view -name worst_worst -constraint_mode {default} -delay_corner {worst}
+create_analysis_view -name best_best -constraint_mode {default} -delay_corner {best}
+create_analysis_view -name nom_nom -constraint_mode {default} -delay_corner {nom}
+
+set_analysis_view -setup {worst_worst} -hold {best_best}
+

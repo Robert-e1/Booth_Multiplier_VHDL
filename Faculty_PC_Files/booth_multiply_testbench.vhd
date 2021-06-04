@@ -21,11 +21,11 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Tb_Booth_Multiply is
+entity booth_multiply_testbench is
 --  Port ( );
-end Tb_Booth_Multiply;
+end booth_multiply_testbench;
 
-architecture Behavioral of Tb_Booth_Multiply is
+architecture Behavioral of booth_multiply_testbench is
 --signals:
     signal s_clk: std_logic := '0';
     signal s_rst, s_start, s_ready: std_logic;
@@ -33,36 +33,45 @@ architecture Behavioral of Tb_Booth_Multiply is
     signal s_r: signed(15 downto 0);
     
     constant num_cycles : integer := 320; 
+--add DUT:
+    component booth_multiply	
+    port
+    (	
+	--inputs:
+	a_in, b_in: in signed(7 downto 0);
+	start, rst, clk: in std_logic;
+	--outputs:
+	ready: out std_logic;
+	r_out: out signed(15 downto 0)
+    );
+    end component;
+
 begin
 --instantiate DUT:
-    BOOTH_MULTIPLIER: entity work. booth_multiply
-    port map
-    (
-        clk => s_clk,
+    uut: booth_multiply port map
+	(
+	clk => s_clk,
         rst => s_rst,
         start => s_start,
         ready => s_ready,
         a_in => s_a,
         b_in => s_b,
         r_out => s_r
-    );
-    
+	);
 --generate test signals:
     input_and_reset:process
     begin
          
-        s_rst <= '1', '0' after 50ns, '1' after 25000ns, '0' after 25050ns;  
+        s_rst <= '1', '0' after 50 ns, '1' after 25000 ns, '0' after 25050 ns;  
         
-        s_start <= '0', '1' after 60 ns, '0' after 160ns, '1' after 1550ns, '0' after 1650ns, '1' after 3950ns, '0' after 4050ns,
-                   '1' after 8050ns, '0' after 8150ns, '1' after 12050ns, '0' after 12150ns, '1' after 16050ns, '0' after 16150ns,
-                   '1' after 20050ns, '0' after 20150ns;  
+        s_start <= '0', '1' after 60 ns, '0' after 160 ns, '1' after 1550 ns, '0' after 1650 ns, '1' after 3950 ns, '0' after 4050 ns, 
+                   '1' after 8050 ns, '0' after 8150 ns, '1' after 12050 ns, '0' after 12150 ns, '1' after 16050 ns, '0' after 16150 ns,
+                   '1' after 20050 ns, '0' after 20150 ns;  
         
         --input a_in sequence: -8, 6, -10, 0, 53, 69, 127
-        s_a <= "11111000", "00000110" after 400ns, "11110110" after 3600ns, "00000000" after 8000ns, "00110101" after 12000ns, "01000101" after 16000ns,
-               "01111111" after 20000ns;        
+        s_a <= "11111000", "00000110" after 400 ns, "11110110" after 3600 ns, "00000000" after 8000 ns, "00110101" after 12000 ns, "01000101" after 16000 ns, "01111111" after 20000 ns;        
         --input b_in sequence: 8, 6, 8, 127, 0, 12, 127
-        s_b <= "00001000", "00000110" after 400ns, "00001000" after 3600ns, "01111111" after 8000ns, "00000000" after 12000ns, "00001100" after 16000ns,
-               "01111111" after 20000ns;
+        s_b <= "00001000", "00000110" after 400 ns, "00001000" after 3600 ns, "01111111" after 8000 ns, "00000000" after 12000 ns, "00001100" after 16000 ns, "01111111" after 20000 ns;
     
     wait;
     end process;
@@ -79,4 +88,3 @@ begin
     end process;
 
 end Behavioral;
-
